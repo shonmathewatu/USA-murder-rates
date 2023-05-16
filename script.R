@@ -139,10 +139,10 @@ states
 install.packages("e1071")
 library(e1071)
 
-opar <- par(no.readonly = TRUE)
+#opar <- par(no.readonly = TRUE)
 #Show 4 rows x 2 cols of charts
-par(mfrow = c(4,2))
-par(opar)
+#par(mfrow = c(4,2))
+#par(opar)
 plot(density(states$Population),
      main = "Density plot for population",
      sub = paste("Skewness : ", round(e1071::skewness(states$Population), 2)))
@@ -150,5 +150,112 @@ plot(density(states$Population),
 #to fill the area inside with color                 
 polygon(density(states$Population), col = "red")
 
+shapiro.test(states$Population)
 
 states
+
+
+install.packages("MASS")
+library(MASS)
+box_cox_transform <- boxcox(states$Murder ~ states$Population)
+
+lambda <- box_cox_transform$x[which.max(box_cox_transform$y)]
+lambda
+# lambda value 0.4242424
+normalised_population <- ((states$Population^lambda-1)/lambda)
+hist(normalised_population)
+shapiro.test(normalised_population)
+#p-value = 0.1835 - so normally distributed (if p value < 0.05 it is not normally distributed)
+
+
+
+#income
+plot(density(states$Income),
+     main = "Density plot for income",
+     sub = paste("Skewness : ", round(e1071::skewness(states$Income), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$Income), col = "red")
+
+shapiro.test(states$Income)
+
+
+#illitracy
+plot(density(states$Illiteracy),
+     main = "Density plot for illitracy",
+     sub = paste("Skewness : ", round(e1071::skewness(states$Illiteracy), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$Illiteracy), col = "red")
+
+shapiro.test(states$Illiteracy)
+# not normallly distributed
+
+#life expectancy
+plot(density(states$`Life Exp`),
+     main = "Density plot for life exp",
+     sub = paste("Skewness : ", round(e1071::skewness(states$`Life Exp`), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$`Life Exp`), col = "red")
+
+shapiro.test(states$`Life Exp`)
+# normally distributed
+
+#murder
+plot(density(states$Murder),
+     main = "Density plot for Murder",
+     sub = paste("Skewness : ", round(e1071::skewness(states$Murder), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$Murder), col = "red")
+
+shapiro.test(states$Murder)
+# normally distributed
+
+#HS grad
+plot(density(states$`HS Grad`),
+     main = "Density plot for HS Grad",
+     sub = paste("Skewness : ", round(e1071::skewness(states$`HS Grad`), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$`HS Grad`), col = "red")
+
+shapiro.test(states$`HS Grad`)
+#not normally distributed
+
+#Frost
+plot(density(states$Frost),
+     main = "Density plot for frost",
+     sub = paste("Skewness : ", round(e1071::skewness(states$Frost), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$Frost), col = "red")
+
+shapiro.test(states$Frost)
+#normally distributed
+
+#area
+plot(density(states$Area),
+     main = "Density plot for area",
+     sub = paste("Skewness : ", round(e1071::skewness(states$Area), 2)))
+
+#to fill the area inside with color                 
+polygon(density(states$Area), col = "red")
+
+shapiro.test(states$Area)
+#normally distributed
+
+
+box_cox_transform <- boxcox(states$Murder ~ states$Population)
+
+lambda <- box_cox_transform$x[which.max(box_cox_transform$y)]
+lambda
+# lambda value 0.4242424
+normalised_illitracy <- ((states$Population^lambda-1)/lambda)
+hist(normalised_illitracy)
+shapiro.test(normalised_illitracy)
+#p-value = 0.1835 - so normally distributed (if p value < 0.05 it is not normally distributed)
+
+
+
